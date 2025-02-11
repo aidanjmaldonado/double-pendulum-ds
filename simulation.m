@@ -34,8 +34,15 @@ classdef simulation
         end
 
         function run(obj)
-            disp("Test: Inside Run");
-            obj.integration_function();
+
+            % Initial state
+            pendulum_state = state(obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot);
+
+            % Loop for each time step
+            for t = 0:obj.step:obj.duration
+                pendulum_state = obj.integration_function(pendulum_state, obj.step);
+            end
+
         end
     end
 end

@@ -21,6 +21,6 @@ duration  = 5;             % simulation duration (s)
 
 
 
-euler_method_1 = simulation(@euler_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration);
+euler_method_1 = simulation(@euler_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 euler_method_1.run()
 
