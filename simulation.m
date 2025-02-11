@@ -32,7 +32,8 @@ classdef simulation
             obj.step = step;
             obj.duration = duration;
         end
-
+        
+        % Run Simulation: Given initial conditions, compute subsequent states
         function run(obj)
 
             % Initial state
@@ -40,7 +41,7 @@ classdef simulation
 
             % Loop for each time step
             for t = 0:obj.step:obj.duration
-                pendulum_state = obj.integration_function(pendulum_state, obj.step);
+                pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
             end
 
         end
