@@ -12,6 +12,8 @@ classdef simulation
         theta2_dot
         step
         duration
+        thetas1
+        thetas2
     end
 
     methods
@@ -31,6 +33,9 @@ classdef simulation
             obj.theta2_dot = theta2_dot;
             obj.step = step;
             obj.duration = duration;
+            obj.thetas1 = zeros(1, floor(obj.duration / obj.step) + 1);
+            obj.thetas2 = zeros(1, floor(obj.duration / obj.step) + 1);
+
         end
         
         % Run Simulation: Given initial conditions, compute subsequent states
@@ -40,10 +45,31 @@ classdef simulation
             pendulum_state = state(obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot);
 
             % Loop for each time step
-            for t = 0:obj.step:obj.duration
+            num_iterations = floor(obj.duration / obj.step) + 1;
+            for t = 2:num_iterations
                 pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
+                
+                % Store thetas for debugging
+                obj.thetas1(t) = pendulum_state.theta1;
+                obj.thetas2(t) = pendulum_state.theta2;
+                disp(t);
             end
 
+            xaxis = 0:obj.step:obj.duration;  % Proper time axis
+            
+            plot(xaxis, obj.thetas1, 'b', 'LineWidth', 1.5); % Theta 1 in blue
+            hold on;
+            plot(xaxis, obj.thetas2, 'r', 'LineWidth', 1.5); % Theta 2 in red
+            
+            xlabel('Time (s)');
+            ylabel('\theta (rad)');
+            title('Double Pendulum \theta_1 and \theta_2 Over Time');
+            legend('\theta_1', '\theta_2');  % Adding the legend
+            grid on;
+            hold off;
+
+            
+            
         end
     end
 end

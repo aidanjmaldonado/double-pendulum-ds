@@ -14,6 +14,5 @@ function next_state =  euler_method(current_state, g, m1, m2, L1, L2, step)
     new_theta2_dot = theta2_dot + step * M2AA(g, m1, m2, theta1, theta1_dot, theta2, theta2_dot, L1, L2);
     
     % Package and return
-    disp(new_theta1);
     next_state = state(new_theta1, new_theta1_dot, new_theta2, new_theta2_dot);
 end
