@@ -13,3 +13,4 @@ There will be 2 simulations run for each of the 3 integration methods, each with
 ## Project Files:
 
 `M1AA.m` - Calculates angular momentum (`theta1_doot`) of theta 1 given the current values of `theta1`, `theta2`, `theta1_dot`, and `theta2_dot` at the n-th state.
+$\theta$
