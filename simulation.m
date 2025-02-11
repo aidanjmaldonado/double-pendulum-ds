@@ -19,7 +19,7 @@ classdef simulation
         % Instantiate a simulation object with specified integration function
         % and initial conditions
         function obj = simulation(integration_function, gravity, mass1, mass2, length1, length2, theta1, theta1_dot, theta2, theta2_dot, step, duration)
-            obj.integration_function = str2func(func2str(integration_function));
+            obj.integration_function = integration_function;
             obj.gravity = gravity;
             obj.mass1 = mass1;
             obj.mass2 = mass2;
