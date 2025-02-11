@@ -12,8 +12,8 @@ classdef simulation
         theta2_dot
         step
         duration
-        thetas1
-        thetas2
+        thetas1 % Remove, for debugging
+        thetas2 % Remove, for debugging
     end
 
     methods
@@ -33,8 +33,8 @@ classdef simulation
             obj.theta2_dot = theta2_dot;
             obj.step = step;
             obj.duration = duration;
-            obj.thetas1 = zeros(1, floor(obj.duration / obj.step) + 1);
-            obj.thetas2 = zeros(1, floor(obj.duration / obj.step) + 1);
+            obj.thetas1 = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
+            obj.thetas2 = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
 
         end
         
@@ -49,27 +49,22 @@ classdef simulation
             for t = 2:num_iterations
                 pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
                 
-                % Store thetas for debugging
-                obj.thetas1(t) = pendulum_state.theta1;
-                obj.thetas2(t) = pendulum_state.theta2;
-                disp(t);
+                % Store theta1 and theta2 in each state to plot / time
+                obj.thetas1(t) = pendulum_state.theta1; % Remove, for debugging
+                obj.thetas2(t) = pendulum_state.theta2; % Remove, for debugging
             end
 
-            xaxis = 0:obj.step:obj.duration;  % Proper time axis
-            
-            plot(xaxis, obj.thetas1, 'b', 'LineWidth', 1.5); % Theta 1 in blue
-            hold on;
-            plot(xaxis, obj.thetas2, 'r', 'LineWidth', 1.5); % Theta 2 in red
-            
-            xlabel('Time (s)');
-            ylabel('\theta (rad)');
-            title('Double Pendulum \theta_1 and \theta_2 Over Time');
-            legend('\theta_1', '\theta_2');  % Adding the legend
-            grid on;
-            hold off;
-
-            
-            
+            % Plot theta1 & theta2 / time
+            xaxis = 0:obj.step:obj.duration;              % Remove, for debugging
+            plot(xaxis, obj.thetas1, 'LineWidth', 1.5);   % Remove, for debugging
+            hold on;                                      % Remove, for debugging
+            plot(xaxis, obj.thetas2, 'LineWidth', 1.5);   % Remove, for debugging
+            xlabel('Time (s)');                           % Remove, for debugging
+            ylabel('\theta (rad)');                       % Remove, for debugging
+            title('Double Pendulum \theta_1 and \theta_2 Over Time'); % R, f dbug
+            legend('\theta_1', '\theta_2');  % Legend     % Remove, for debugging
+            grid on;                                      % Remove, for debugging
+            hold off;                                     % Remove, for debugging
         end
     end
 end
