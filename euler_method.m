@@ -1,4 +1,3 @@
-function euler(x)
+function euler()
     disp("Test: Inside Euler");
-    disp(x);
 end
