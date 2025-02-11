@@ -13,5 +13,14 @@ theta1_dot  = 0;           % initial angular velocity (rad/s)
 theta2_init = 2 / (3*pi);  % initial angle of arm 2 from equilibrium (radians)
 theta2_dot  = 0;           % initial angular velocity (rad/s)
 
-time_step = [0.1, 0.01];   % simulation timestamps precision (s)
-time_span = 5;             % simulation duration (s)
+% Simulatiion Settings
+t_step    = [0.1, 0.01];   % simulation timestamp precision (s/step)
+duration  = 5;             % simulation duration (s)
+
+%%
+
+
+
+euler_method_1 = simulation(@euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration);
+euler_method_1.run()
+
