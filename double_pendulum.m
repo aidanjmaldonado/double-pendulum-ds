@@ -28,8 +28,8 @@ xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 title("Double Pendulum")
 
-euler_method_1 = simulation(@euler_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
-euler_method_1.run() % [**** Seems wrong :') ****]
+euler_method_1 = simulation(@euler_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
+euler_method_1.run() % [**** Seems wrong :') Euler 1 actually seems to work fine if it uses the smaller t_step (2) ****]
 euler_method_1.animate("Euler Method 1")
 
 
