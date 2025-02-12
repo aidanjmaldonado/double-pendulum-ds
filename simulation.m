@@ -1,4 +1,4 @@
-classdef simulation
+classdef simulation < handle % 'handle' ensures that the object properties can be updated within its methods
     properties
         integration_function
         gravity
@@ -12,8 +12,8 @@ classdef simulation
         theta2_dot
         step
         duration
-        thetas1 % Remove, for debugging
-        thetas2 % Remove, for debugging
+        theta1_array % Remove, for debugging
+        theta2_array % Remove, for debugging
     end
 
     methods
@@ -33,8 +33,8 @@ classdef simulation
             obj.theta2_dot = theta2_dot;
             obj.step = step;
             obj.duration = duration;
-            obj.thetas1 = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
-            obj.thetas2 = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
+            obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
+            obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
 
         end
         
@@ -46,25 +46,71 @@ classdef simulation
 
             % Loop for each time step
             num_iterations = floor(obj.duration / obj.step) + 1;
-            for t = 2:num_iterations
+            for t = 1:num_iterations
                 pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
                 
                 % Store theta1 and theta2 in each state to plot / time
-                obj.thetas1(t) = pendulum_state.theta1; % Remove, for debugging
-                obj.thetas2(t) = pendulum_state.theta2; % Remove, for debugging
+                obj.theta1_array(t) = pendulum_state.theta1;
+                obj.theta2_array(t) = pendulum_state.theta2;
             end
 
-            % Plot theta1 & theta2 / time
-            xaxis = 0:obj.step:obj.duration;              % Remove, for debugging
-            plot(xaxis, obj.thetas1, 'LineWidth', 1.5);   % Remove, for debugging
-            hold on;                                      % Remove, for debugging
-            plot(xaxis, obj.thetas2, 'LineWidth', 1.5);   % Remove, for debugging
-            xlabel('Time (s)');                           % Remove, for debugging
-            ylabel('\theta (rad)');                       % Remove, for debugging
-            title('Double Pendulum \theta_1 and \theta_2 Over Time'); % R, f dbug
-            legend('\theta_1', '\theta_2');  % Legend     % Remove, for debugging
-            grid on;                                      % Remove, for debugging
-            hold off;                                     % Remove, for debugging
+            % % Plot theta1 & theta2 / time
+            % xaxis = 0:obj.step:obj.duration;              % Remove, for debugging
+            % plot(xaxis, obj.theta1_array, 'LineWidth', 1.5);   % Remove, for debugging
+            % hold on;                                      % Remove, for debugging
+            % plot(xaxis, obj.theta2_array, 'LineWidth', 1.5);   % Remove, for debugging
+            % xlabel('Time (s)');                           % Remove, for debugging
+            % ylabel('\theta (rad)');                       % Remove, for debugging
+            % title('Double Pendulum \theta_1 and \theta_2 Over Time'); % R, f dbug
+            % legend('\theta_1', '\theta_2');  % Legend     % Remove, for debugging
+            % grid on;                                      % Remove, for debugging
+            % hold off;                                     % Remove, for debugging
+        end
+
+        % Animate double pendulum motion
+        function animate(obj, title_name)
+
+            
+            % Establish figure edges to center the pendulum
+            theta_legend = legend({sprintf('\\theta_1 = %.2f rad', obj.theta1_array(1)), sprintf('\\theta_2 = %.2f rad', obj.theta2_array(1))},'Location', 'northeast');
+
+            % % Initialize
+            % Pendulum Arms
+            arm1 = plot([0, 0], [0, 0], 'Color', '#4DBEEE', 'LineWidth', 3);
+            arm2 = plot([0, 0], [0, 0], 'Color', '#4DBEEE', 'LineWidth', 3);
+
+            % Pendulum Balls
+            ball1 = plot(0, 0, 'o', 'MarkerSize', 11, 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
+            ball2 = plot(0, 0, 'o', 'MarkerSize', 11, 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
+
+            % % Update Animation
+            num_iterations = floor(obj.duration / obj.step) + 1;
+
+            for t = 1:num_iterations
+                
+                % Get new joint positions
+                arm1_bot_x = obj.length1 * sin(obj.theta1_array(t));
+                arm1_bot_y = -obj.length1 * cos(obj.theta1_array(t));
+
+                arm2_top_x = arm1_bot_x;
+                arm2_top_y = arm1_bot_y;
+
+                arm2_bot_x = arm2_top_x + obj.length2 * sin(obj.theta2_array(t));
+                arm2_bot_y = arm2_top_y - obj.length2 * cos(obj.theta2_array(t));
+
+                % Replace joint positions
+                set(arm1, 'XData', [0, arm1_bot_x], 'YData', [0, arm1_bot_y]);
+                set(arm2, 'XData', [arm2_top_x, arm2_bot_x], 'YData', [arm2_top_y, arm2_bot_y]);
+                set(ball1, 'XData', arm1_bot_x, 'YData', arm1_bot_y);
+                set(ball2, 'XData', arm2_bot_x, 'YData', arm2_bot_y);
+                title(title_name);
+
+                % Update legend
+                set(theta_legend, 'String', {sprintf('\\theta_1 = %.2f rad', obj.theta1_array(t)), sprintf('\\theta_2 = %.2f rad', obj.theta2_array(t))});
+
+                % Step forward
+                pause(obj.step);
+            end
         end
     end
 end
