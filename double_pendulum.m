@@ -23,7 +23,7 @@ duration  = 5;            % simulation duration (s) [** At around 30s it devolve
 figure;
 axis equal;
 hold on;
-max_L2 = max(L2)
+max_L2 = max(L2);
 xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 title("Double Pendulum")
@@ -37,11 +37,13 @@ euler_method_2 = simulation(@euler_method, g, m1, m2, L1, L2(2), theta1_init, th
 euler_method_2.run() % Seems alright?
 euler_method_2.animate("Euler Method 2")
 
-% trapezoid_method_1 = simulation(@trapezoid_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
-% trapezoid_method_1.run()
-% 
-% trapezoid_method_2 = simulation(@trapezoid_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
-% trapezoid_method_2.run()
+trapezoid_method_1 = simulation(@trapezoid_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
+trapezoid_method_1.run()
+trapezoid_method_1.animate("Trapezoid Method 1")
+
+trapezoid_method_2 = simulation(@trapezoid_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
+trapezoid_method_2.run()
+trapezoid_method_2.animate("Trapezoid Method 2")
 % 
 % runge_kutta_method_1 = simulation(@runge_kutta_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 % runge_kutta_method_1.run()
@@ -49,3 +51,4 @@ euler_method_2.animate("Euler Method 2")
 % runge_kutta_method_2 = simulation(@runge_kutta_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
 % runge_kutta_method_2.run()
 
+hold off;
