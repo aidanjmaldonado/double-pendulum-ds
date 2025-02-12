@@ -75,8 +75,8 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             arm2 = plot([0, 0], [0, 0], 'Color', '#4DBEEE', 'LineWidth', 3);
 
             % Pendulum Balls
-            ball1 = plot(0, 0, 'o', 'MarkerSize', 11, 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
-            ball2 = plot(0, 0, 'o', 'MarkerSize', 11, 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
+            ball1 = plot(0, 0, 'o', 'MarkerSize', (11 * sqrt(obj.mass1)), 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
+            ball2 = plot(0, 0, 'o', 'MarkerSize', (11 * sqrt(obj.mass2)), 'MarkerFaceColor', '#D95319', 'MarkerEdgeColor', 'k');
 
             % % Update Animation
             num_iterations = floor(obj.duration / obj.step) + 1;
