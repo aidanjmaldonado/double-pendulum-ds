@@ -24,8 +24,10 @@ _Note: For less chaotic results, use a smaller `t_step` value (Adjusted at the t
 
 5. *Function* `euler_method.m` - Calculates the $(n+1)$-th state values of $\theta_{1}$, $\dot{\theta_{1}}$, $\theta_{2}$, $\dot{\theta_{2}}$ given them at the $n-th$ state. Calls `M1AA.m` and `M2AA.m`
 
-6. *Class* `simulation.m` - Instantiates a simulation object from an initial pendulum state with the provided initial condition and other system values. Calculates iterative state values for a set duration. Calls either `euler_method.m`, `trapezoid_method.m`, or `runge_kutta_method.m`, depending on what integration function is passed in as an object parameter during initialization.
+6. *Function* `ode45_method.m` - Calculates the $(n+1)$-th state values of $\theta_{1}$, $\dot{\theta_{1}}$, $\theta_{2}$, $\dot{\theta_{2}}$ given them at the $n-th$ state using Matlab's ode45 solver. Calls `M1AA.m` and `M2AA.m`
 
-7. *Class* `state.m` - Represents the values of $\theta_{1}$, $\dot{\theta_{1}}$, $\theta_{2}$, $\dot{\theta_{2}}$ at any given state.
+7. *Class* `simulation.m` - Instantiates a simulation object from an initial pendulum state with the provided initial condition and other system values. Calculates iterative state values for a set duration. Calls either `euler_method.m`, `trapezoid_method.m`, or `runge_kutta_method.m`, depending on what integration function is passed in as an object parameter during initialization.
 
-8. *Main Script* `double_pendulum.m` - Calls `simulation.m` to construct various double pendulum simulations with set initial states and plots the corresponding generated animations.
+8. *Class* `state.m` - Represents the values of $\theta_{1}$, $\dot{\theta_{1}}$, $\theta_{2}$, $\dot{\theta_{2}}$ at any given state.
+
+9. *Main Script* `double_pendulum.m` - Calls `simulation.m` to construct various double pendulum simulations with set initial states and plots the corresponding generated animations.

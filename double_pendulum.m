@@ -54,4 +54,12 @@ runge_kutta_method_2 = simulation(@runge_kutta_method, g, m1, m2, L1, L2(2), the
 runge_kutta_method_2.run()
 runge_kutta_method_2.animate("Runge-Kutta Method 2")
 
+ode45_method_1 = simulation(@ode45_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
+ode45_method_1.run()
+ode45_method_1.animate("ode45 Method 1")
+
+ode45_method_2 = simulation(@ode45_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
+ode45_method_2.run()
+ode45_method_2.animate("ode45 Method 2")
+
 hold off;

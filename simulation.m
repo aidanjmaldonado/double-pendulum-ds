@@ -44,14 +44,21 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Initial state
             pendulum_state = state(obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot);
 
-            % Loop for each time step
+            % Loop for each time step if not ode45 method
             num_iterations = floor(obj.duration / obj.step) + 1;
-            for t = 1:num_iterations
-                pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
-                
-                % Store theta1 and theta2 in each state to plot / time
-                obj.theta1_array(t) = pendulum_state.theta1;
-                obj.theta2_array(t) = pendulum_state.theta2;
+
+            if ~(strcmp(func2str(obj.integration_function), 'ode45_method')) % Not ode45 case
+                for t = 1:num_iterations
+                    pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
+                    
+                    % Store theta1 and theta2 in each state to plot / time
+                    obj.theta1_array(t) = pendulum_state.theta1;
+                    obj.theta2_array(t) = pendulum_state.theta2;
+                end
+            else % ode45 case
+                state_array = obj.integration_function(obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot, obj.step, obj.duration);
+                obj.theta1_array = state_array(:, 1);
+                obj.theta2_array = state_array(:, 3);
             end
         end
 
