@@ -12,8 +12,8 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
         theta2_dot
         step
         duration
-        theta1_array % Remove, for debugging
-        theta2_array % Remove, for debugging
+        theta1_array
+        theta2_array
     end
 
     methods
@@ -33,8 +33,8 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             obj.theta2_dot = theta2_dot;
             obj.step = step;
             obj.duration = duration;
-            obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
-            obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1); % Remove, for debugging
+            obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1);
+            obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1);
 
         end
         
@@ -53,18 +53,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 obj.theta1_array(t) = pendulum_state.theta1;
                 obj.theta2_array(t) = pendulum_state.theta2;
             end
-
-            % % Plot theta1 & theta2 / time
-            % xaxis = 0:obj.step:obj.duration;              % Remove, for debugging
-            % plot(xaxis, obj.theta1_array, 'LineWidth', 1.5);   % Remove, for debugging
-            % hold on;                                      % Remove, for debugging
-            % plot(xaxis, obj.theta2_array, 'LineWidth', 1.5);   % Remove, for debugging
-            % xlabel('Time (s)');                           % Remove, for debugging
-            % ylabel('\theta (rad)');                       % Remove, for debugging
-            % title('Double Pendulum \theta_1 and \theta_2 Over Time'); % R, f dbug
-            % legend('\theta_1', '\theta_2');  % Legend     % Remove, for debugging
-            % grid on;                                      % Remove, for debugging
-            % hold off;                                     % Remove, for debugging
         end
 
         % Animate double pendulum motion
