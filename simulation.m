@@ -35,7 +35,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             obj.duration = duration;
             obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1);
             obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1);
-
         end
         
         % Run Simulation: Given initial conditions, compute subsequent states
@@ -66,7 +65,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
         function animate(obj, title_name, frameax)
 
             % % Establish pendulum subplot
-            % figure(frame.figure)
             axes(frameax)
             title(title_name);
             % legend({'\theta_1', '\theta_2'}); -- Removed to improve performance (See loop below)
@@ -109,7 +107,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 % Step forward
                 pause(obj.step);
             end
-
         end % Animate
 
         function theta_plot(obj, frameax)
@@ -131,9 +128,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             p1 = plot(xaxis, theta1_norm, 'LineWidth', 1.5, 'Color', '#8357eb');
             p2 = plot(xaxis, theta2_norm, 'LineWidth', 1.5, 'Color', '#60a871');
             legend([p1, p2], {'\theta_1', '\theta_2'});
-
         end
-
     end % Methods
 
     methods(Static)
@@ -172,6 +167,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
 
         function pframe = initialize_performance()
 
+            % Initialize performance subplots
             pframe = figure;
             figure(pframe)
 
@@ -190,24 +186,18 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             title("Initial Condition 2 - Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
 
             pframe = struct('figure', pframe, 'ax1', ax1, 'ax2', ax2, 'ax3', ax3, 'ax4', ax4, 'ax5', ax5, 'ax6', ax6);
-        end
+        end % Initialize Performance Plots
 
         function performance_plot(actual, attempt, frameax)
-            % actual and attempt are both objects of class simulation
+
+            % Create plot
             axes(frameax);
-            hold on;
-            
-            % Time axis
             xaxis = 0:actual.step:actual.duration;
-            
-            len = length(actual.theta1_array);
+            hold on;
         
             % Compute the per-step absolute error
-            theta1_error = abs(actual.theta1_array(1:len)' - attempt.theta1_array(1:len));
-            theta2_error = abs(actual.theta2_array(1:len)' - attempt.theta2_array(1:len));
-            disp(size(theta2_error))
-            disp(size(actual.theta2_array'))
-            disp(size(attempt.theta2_array))
+            theta1_error = abs(actual.theta1_array' - attempt.theta1_array);
+            theta2_error = abs(actual.theta2_array' - attempt.theta2_array);
         
             % Plot the errors
             plot(xaxis, theta1_error, 'LineWidth', 1.5, 'Color', '#8357eb');
@@ -218,9 +208,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             ylabel('Error in \theta (radians)');
             legend({'Error in \theta_1', 'Error in \theta_2'});
             grid on;
-        end
-
-        
+        end % Plot Performance
     end % Methods (Static)
-
 end % Class
