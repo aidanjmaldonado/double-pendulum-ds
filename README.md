@@ -35,3 +35,17 @@ _Notes_:
 8. *Class* `state.m` - Represents the values of $$\theta_{1}$$, $$\dot{\theta_{1}}$$, $$\theta_{2}$$, $$\dot{\theta_{2}}$$ at any given state.
 
 9. *Main Script* `double_pendulum.m` - Calls `simulation.m` to construct various double pendulum simulations with predefined initial states and plot the corresponding generated animations.
+
+## Output
+
+### Example Figure 1:
+
+<center>
+    <img src="src/ex_figure_2.png" alt="Figure 1" width="1000"/>
+</center>
+
+### Example Figure 2:
+
+<center>
+    <img src="src/ex_figure_2.png" alt="Figure 2" width="1000"/>
+</center>
