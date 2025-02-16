@@ -1,5 +1,5 @@
 % Calculate the angular mechanics of the system at the next state
-function next_state =  runge_kutta(current_state, g, m1, m2, L1, L2, step)
+function next_state =  runge_kutta_method(current_state, g, m1, m2, L1, L2, step)
     
     % Unpack current state values
     theta1     = current_state.theta1;
@@ -33,7 +33,7 @@ function next_state =  runge_kutta(current_state, g, m1, m2, L1, L2, step)
 
     % Calculate values of next state using Runge-Kutta's Method
     new_theta1     = theta1 + (1/6) * step * (k1_theta1 + 2 * k2_theta1 + 2 * k3_theta1 + k4_theta1);
-    new_theta1_dot = theta1_dot + (1/6) * step * (k1_theta1_dot + 2*k2_theta1_dot + 2 * k3_theta1_dot + k4_theta1_dot);
+    new_theta1_dot = theta1_dot + (1/6) * step * (k1_theta1_dot + 2 * k2_theta1_dot + 2 * k3_theta1_dot + k4_theta1_dot);
     new_theta2     = theta2 + (1/6) * step * (k1_theta2 + 2 * k2_theta2 + 2 * k3_theta2 + k4_theta2);
     new_theta2_dot = theta2_dot + (1/6) * step * (k1_theta2_dot + 2 * k2_theta2_dot + 2 * k3_theta2_dot + k4_theta2_dot);
     

@@ -17,49 +17,59 @@ theta2_dot  = 0;           % initial angular velocity of arm 2 (rad/s)
 t_step    = [0.1, .01];   % simulation timestamp precision (s/step) - [1st simulation, 2nd simulation]
 duration  = 5;            % simulation duration (s)
 
-
 % % Run Simulations
 
-% Initialize Plot
-figure;
-axis equal;
-hold on;
-max_L2 = max(L2);
-xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
-ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
-title("Double Pendulum")
+% Initialize Plots
+frame = simulation.initialize_plots(L1, L2);
 
 % Initialize Pendulums & Simulate
 euler_method_1 = simulation(@euler_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 euler_method_1.run()
-euler_method_1.animate("Euler Method 1")
+euler_method_1.theta_plot(frame.ax2)
+euler_method_1.animate("Initial Condition 1 - Euler Method", frame.ax1)
 
 euler_method_2 = simulation(@euler_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
 euler_method_2.run()
-euler_method_2.animate("Euler Method 2")
+euler_method_2.theta_plot(frame.ax4)
+euler_method_2.animate("Initial Condition 2 - Euler Method", frame.ax3)
 
 trapezoid_method_1 = simulation(@trapezoid_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 trapezoid_method_1.run()
-trapezoid_method_1.animate("Trapezoid Method 1")
+trapezoid_method_1.theta_plot(frame.ax2)
+trapezoid_method_1.animate("Initial Condition 1 - Trapezoid Method 1", frame.ax1)
 
 trapezoid_method_2 = simulation(@trapezoid_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
 trapezoid_method_2.run()
-trapezoid_method_2.animate("Trapezoid Method 2")
+trapezoid_method_2.theta_plot(frame.ax4)
+trapezoid_method_2.animate("Initial Condition 2 - Trapezoid Method", frame.ax3)
 
 runge_kutta_method_1 = simulation(@runge_kutta_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 runge_kutta_method_1.run()
-runge_kutta_method_1.animate("Runge-Kutta Method 1")
+runge_kutta_method_1.theta_plot(frame.ax2)
+runge_kutta_method_1.animate("Initial Condition 1 - Runge-Kutta Method", frame.ax1)
 
 runge_kutta_method_2 = simulation(@runge_kutta_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
 runge_kutta_method_2.run()
-runge_kutta_method_2.animate("Runge-Kutta Method 2")
+runge_kutta_method_2.theta_plot(frame.ax4)
+runge_kutta_method_2.animate("Initial Condition 2 - Runge-Kutta Method", frame.ax3)
 
 ode45_method_1 = simulation(@ode45_method, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration);
 ode45_method_1.run()
-ode45_method_1.animate("ode45 Method 1")
+ode45_method_1.theta_plot(frame.ax2)
+ode45_method_1.animate("Initial Condition 1 - Initial Condition ode45 Method", frame.ax1)
 
 ode45_method_2 = simulation(@ode45_method, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration);
 ode45_method_2.run()
-ode45_method_2.animate("ode45 Method 2")
+ode45_method_2.theta_plot(frame.ax4)
+ode45_method_2.animate("Initial Condition 2 - ode45 Method", frame.ax3)
 
 hold off;
+
+% % Performance Plot
+p_frame = simulation.initialize_performance();
+simulation.performance_plot(euler_method_1, ode45_method_1, p_frame.ax1)
+simulation.performance_plot(euler_method_2, ode45_method_2, p_frame.ax2)
+simulation.performance_plot(trapezoid_method_1, ode45_method_1, p_frame.ax3)
+simulation.performance_plot(trapezoid_method_2, ode45_method_2, p_frame.ax4)
+simulation.performance_plot(runge_kutta_method_1, ode45_method_1, p_frame.ax5)
+simulation.performance_plot(runge_kutta_method_2, ode45_method_2, p_frame.ax6)
