@@ -62,7 +62,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
         end % Run
 
         % Animate double pendulum motion
-        function animate(obj, title_name, frameax)
+        function animate(obj, title_name, frameax, speed)
 
             % % Establish pendulum subplot
             axes(frameax)
@@ -105,7 +105,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 % set(pendulum_legend, 'String', {sprintf('\\theta_1 = %.2f rad', obj.theta1_array(t)), sprintf('\\theta_2 = %.2f rad', obj.theta2_array(t))});
 
                 % Step forward
-                pause(obj.step);
+                pause(obj.step * speed);
             end
         end % Animate
 
