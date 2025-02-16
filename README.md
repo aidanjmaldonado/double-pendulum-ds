@@ -41,11 +41,11 @@ _Notes_:
 ### Example Figure 1:
 
 <center>
-    <img src="src/ex_figure_1.gif" alt="Figure 1" width="1000"/>
+    <img src="resourcs/ex_figure_1.gif" alt="Figure 1" width="1000"/>
 </center>
 
 ### Example Figure 2:
 
 <center>
-    <img src="src/ex_figure_2.png" alt="Figure 2" width="1000"/>
+    <img src="resources/ex_figure_2.png" alt="Figure 2" width="1000"/>
 </center>
