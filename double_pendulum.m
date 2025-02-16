@@ -50,34 +50,37 @@ ode45_method_2.run()
 
 % Animate simulation and plot results
 euler_method_1.theta_plot(frame.ax2)
-euler_method_1.animate("Initial Condition 1 - Euler Method", frame.ax1, 1.00)
+euler_method_1.animate("Initial Condition 1 - Euler Method", 1.00, frame.ax1)
 
 euler_method_2.theta_plot(frame.ax4)
-euler_method_2.animate("Initial Condition 2 - Euler Method", frame.ax3, 1.00)
+euler_method_2.animate("Initial Condition 2 - Euler Method", 1.00, frame.ax3)
 
 trapezoid_method_1.theta_plot(frame.ax2)
-trapezoid_method_1.animate("Initial Condition 1 - Trapezoid Method 1", frame.ax1, 1.00)
+trapezoid_method_1.animate("Initial Condition 1 - Trapezoid Method 1", 1.00, frame.ax1)
 
 trapezoid_method_2.theta_plot(frame.ax4)
-trapezoid_method_2.animate("Initial Condition 2 - Trapezoid Method", frame.ax3, 1.00)
+trapezoid_method_2.animate("Initial Condition 2 - Trapezoid Method", 1.00, frame.ax3)
 
 runge_kutta_method_1.theta_plot(frame.ax2)
-runge_kutta_method_1.animate("Initial Condition 1 - Runge-Kutta Method", frame.ax1, 1.00)
+runge_kutta_method_1.animate("Initial Condition 1 - Runge-Kutta Method", 1.00, frame.ax1)
 
 runge_kutta_method_2.theta_plot(frame.ax4)
-runge_kutta_method_2.animate("Initial Condition 2 - Runge-Kutta Method", frame.ax3, 1.00)
+runge_kutta_method_2.animate("Initial Condition 2 - Runge-Kutta Method", 1.00, frame.ax3)
 
 ode45_method_1.theta_plot(frame.ax2)
-ode45_method_1.animate("Initial Condition 1 - Initial Condition ode45 Method", frame.ax1, 1.00)
+ode45_method_1.animate("Initial Condition 1 - Initial Condition ode45 Method", 1.00, frame.ax1)
 
 ode45_method_2.theta_plot(frame.ax4)
-ode45_method_2.animate("Initial Condition 2 - ode45 Method", frame.ax3, 1.00)
+ode45_method_2.animate("Initial Condition 2 - ode45 Method", 1.00, frame.ax3)
 
 % % Performance plots
 p_frame = simulation.initialize_performance();
+
 simulation.performance_plot(euler_method_1, ode45_method_1, p_frame.ax1)
 simulation.performance_plot(euler_method_2, ode45_method_2, p_frame.ax2)
+
 simulation.performance_plot(trapezoid_method_1, ode45_method_1, p_frame.ax3)
 simulation.performance_plot(trapezoid_method_2, ode45_method_2, p_frame.ax4)
+
 simulation.performance_plot(runge_kutta_method_1, ode45_method_1, p_frame.ax5)
 simulation.performance_plot(runge_kutta_method_2, ode45_method_2, p_frame.ax6)
