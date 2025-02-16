@@ -14,7 +14,7 @@ In MATLAB, run `double_pendulum.m`. This file will generate several figures comp
 
 _Notes_: 
 - _For less chaotic results, use a smaller `t_step` value (This can be adjusted in `double_pendulum.m`)._
-- _Some initial conditions cause the pendulum to spin sporadically, resulting in values of_ $$\theta_1$$ _and_ $$\theta_2$$ _that are difficult to visualize. To counteract this, the right column of `Figure 1` — the_ $$\theta$$_/Time plots — has been normalized to [-π, π]._
+- _Some initial conditions cause the pendulum to spin sporadically, resulting in values of_ $$\theta_1$$ _and_ $$\theta_2$$ _that are difficult to visualize. To counteract this, the right column of `Figure 1` — the_ $$\theta$$_/Time plots — has been normalized to [-π, π] [Might remove]._
 
 ## Project Files:
 
