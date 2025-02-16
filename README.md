@@ -41,7 +41,7 @@ _Notes_:
 ### Example Figure 1:
 
 <center>
-    <img src="resourcs/ex_figure_1.gif" alt="Figure 1" width="1000"/>
+    <img src="resources/ex_figure_1.gif" alt="Figure 1" width="1000"/>
 </center>
 
 ### Example Figure 2:
