@@ -14,13 +14,15 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
         duration
         theta1_array
         theta2_array
+        effective_dampening
+        normalize
     end % Properties
 
     methods
 
         % Instantiate a simulation object with specified integration function
         % and initial conditions
-        function obj = simulation(integration_function, gravity, mass1, mass2, length1, length2, theta1, theta1_dot, theta2, theta2_dot, step, duration)
+        function obj = simulation(integration_function, gravity, mass1, mass2, length1, length2, theta1, theta1_dot, theta2, theta2_dot, step, duration, dampening, normalize)
             obj.integration_function = integration_function;
             obj.gravity = gravity;
             obj.mass1 = mass1;
@@ -35,6 +37,8 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             obj.duration = duration;
             obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1);
             obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1);
+            obj.effective_dampening = dampening^(obj.step / 0.1);
+            obj.normalize = normalize;
         end
         
         % Run Simulation: Given initial conditions, compute subsequent states
@@ -50,12 +54,16 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 for t = 1:num_iterations
                     pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
                     
+                    % Apply dampening
+                    pendulum_state.theta1_dot = pendulum_state.theta1_dot * obj.effective_dampening;
+                    pendulum_state.theta2_dot = pendulum_state.theta2_dot * obj.effective_dampening;
+                    
                     % Store theta1 and theta2 in each state to plot / time
                     obj.theta1_array(t) = pendulum_state.theta1;
                     obj.theta2_array(t) = pendulum_state.theta2;
                 end
             else % ode45 case
-                state_array = obj.integration_function(obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot, obj.step, obj.duration);
+                state_array = obj.integration_function(obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.theta1, obj.theta1_dot, obj.theta2, obj.theta2_dot, obj.step, obj.duration, obj.effective_dampening);
                 obj.theta1_array = state_array(:, 1);
                 obj.theta2_array = state_array(:, 3);
             end
@@ -118,15 +126,21 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
 
             % Change all existing lines to black
             lines = findall(frameax, 'Type', 'Line');
-            set(lines, 'Color', [0.7 0.7 0.7], 'LineWidth', 0.5); % Light gray (RGB: 0.7,0.7
+            set(lines, 'Color', [0.7 0.7 0.7], 'LineWidth', 0.5);
 
             % Normalize thetas to [-π, π] (Avoid blowup plot)
             theta1_norm = mod(obj.theta1_array + pi, 2*pi) - pi;
             theta2_norm = mod(obj.theta2_array + pi, 2*pi) - pi;
 
             % Plot theta_1 and theta_2
-            p1 = plot(xaxis, theta1_norm, 'LineWidth', 1.5, 'Color', '#8357eb');
-            p2 = plot(xaxis, theta2_norm, 'LineWidth', 1.5, 'Color', '#60a871');
+            if obj.normalize
+                p1 = plot(xaxis, theta1_norm, 'LineWidth', 1.5, 'Color', '#8357eb');
+                p2 = plot(xaxis, theta2_norm, 'LineWidth', 1.5, 'Color', '#60a871');
+            else
+                p1 = plot(xaxis, obj.theta1_array, 'LineWidth', 1.5, 'Color', '#8357eb');
+                p2 = plot(xaxis, obj.theta2_array, 'LineWidth', 1.5, 'Color', '#60a871');
+            end
+
             legend([p1, p2], {'\theta_1', '\theta_2'});
         end
     end % Methods
@@ -140,11 +154,13 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
 
             % Animation subplots
             ax1 = subplot(2, 2, 1);
+            axis equal
             max_L2 = max(L2);
             xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
             ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 
             ax3 = subplot(2, 2, 3);
+            axis equal
             max_L2 = max(L2);
             xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
             ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
