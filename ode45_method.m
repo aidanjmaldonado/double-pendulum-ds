@@ -8,8 +8,8 @@ function state_array = ode45_method(g, m1, m2, L1, L2, theta1_init, theta1_dot_i
         theta2     = current_state(3);
         theta2_dot = current_state(4);
     
-        theta1_doot = M1AA(g, m1, m2, theta1, theta1_dot, theta2, theta2_dot, L1, L2);
-        theta2_doot = M2AA(g, m1, m2, theta1, theta1_dot, theta2, theta2_dot, L1, L2);
+        theta1_doot = EOM(1, g, m1, m2, theta1, theta1_dot, theta2, theta2_dot, L1, L2);
+        theta2_doot = EOM(2, g, m1, m2, theta1, theta1_dot, theta2, theta2_dot, L1, L2);
 
         % Apply dampening
         theta1_doot = theta1_doot + (log(e_damp)/t_step) * theta1_dot;
