@@ -50,7 +50,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Loop for each time step if not ode45 method
             num_iterations = floor(obj.duration / obj.step) + 1;
 
-            if ~(strcmp(func2str(obj.integration_function), 'ode45_method')) % Not ode45 case
+            if ~(strcmp(func2str(obj.integration_function), 'ODE45')) % Not ode45 case
                 for t = 1:num_iterations
                     pendulum_state = obj.integration_function(pendulum_state, obj.gravity, obj.mass1, obj.mass2, obj.length1, obj.length2, obj.step);
                     
@@ -116,33 +116,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 pause(obj.step * (1/speed));
             end
         end % Animate
-
-        function theta_plot(obj, frameax)
-
-            % Establish subplot
-            axes(frameax)
-            xaxis = 0:obj.step:obj.duration;
-            hold on;
-
-            % Change all existing lines to black
-            lines = findall(frameax, 'Type', 'Line');
-            set(lines, 'Color', [0.7 0.7 0.7], 'LineWidth', 0.5);
-
-            % Normalize thetas to [-π, π] (Avoid blowup plot)
-            theta1_norm = mod(obj.theta1_array + pi, 2*pi) - pi;
-            theta2_norm = mod(obj.theta2_array + pi, 2*pi) - pi;
-
-            % Plot theta_1 and theta_2
-            if obj.normalize
-                p1 = plot(xaxis, theta1_norm, 'LineWidth', 1.5, 'Color', '#8357eb');
-                p2 = plot(xaxis, theta2_norm, 'LineWidth', 1.5, 'Color', '#60a871');
-            else
-                p1 = plot(xaxis, obj.theta1_array, 'LineWidth', 1.5, 'Color', '#8357eb');
-                p2 = plot(xaxis, obj.theta2_array, 'LineWidth', 1.5, 'Color', '#60a871');
-            end
-
-            legend([p1, p2], {'\theta_1', '\theta_2'});
-        end
     end % Methods
 
     methods(Static)
@@ -153,32 +126,44 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             figure(frame)
 
             % Animation subplots
-            ax1 = subplot(2, 2, 1);
+            ax1 = subplot(2, 3, 1);
             axis equal
             max_L2 = max(L2);
             xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
             ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 
-            ax3 = subplot(2, 2, 3);
+            ax4 = subplot(2, 3, 4);
             axis equal
             max_L2 = max(L2);
             xlim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
             ylim([(-L1 - max_L2) * 1.1, (L1 + max_L2) * 1.1])
 
             % Theta subplots
-            ax2 = subplot(2, 2, 2);
-            xlabel('Time (s)');
-            ylabel('\theta (radians normalized to [-π, π])');
-            title('Initial Condition 1 - \theta_1 and \theta_2 Over Time');
+            ax2 = subplot(2, 3, 2);
+            xlabel('Time [s]');
+            ylabel('\theta_1 [rad]');
+            title('IC 1: \theta_1 Over Time');
             grid on;
 
-            ax4 = subplot(2, 2, 4);
-            xlabel('Time (s)');
-            ylabel('\theta (radians normalized to [-π, π])');
-            title('Initial Condition 2 - \theta_1 and \theta_2 Over Time');
+            ax3 = subplot(2, 3, 3);
+            xlabel('Time [s]');
+            ylabel('\theta_2 [rad]');
+            title('IC 1: \theta_2 Over Time');
             grid on;
 
-            frame = struct('figure', frame, 'ax1', ax1, 'ax2', ax2, 'ax3', ax3, 'ax4', ax4);
+            ax5 = subplot(2, 3, 5);
+            xlabel('Time [s]');
+            ylabel('\theta_1 [rad]');
+            title('IC 2: \theta_1 Over Time');
+            grid on;
+
+            ax6= subplot(2, 3, 6);
+            xlabel('Time [s]');
+            ylabel('\theta_2 [rad]');
+            title('IC 2: \theta_2 Over Time');
+            grid on;
+
+            frame = struct('figure', frame, 'ax1', ax1, 'ax2', ax2, 'ax3', ax3, 'ax4', ax4, 'ax5', ax5, 'ax6', ax6);
         end % initialize_subplots
 
         function pframe = initialize_performance()
@@ -189,20 +174,79 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
 
             % IC subplots
             ax1 = subplot(3, 2, 1);
-            title("Initial Condition 1 - Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
             ax2 = subplot(3, 2, 2);
-            title("Initial Condition 2 - Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
             ax3 = subplot(3, 2, 3);
-            title("Initial Condition 1 - Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
             ax4 = subplot(3, 2, 4);
-            title("Initial Condition 2 - Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
             ax5 = subplot(3, 2, 5);
-            title("Initial Condition 1 - Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
             ax6 = subplot(3, 2, 6);
-            title("Initial Condition 2 - Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
 
             pframe = struct('figure', pframe, 'ax1', ax1, 'ax2', ax2, 'ax3', ax3, 'ax4', ax4, 'ax5', ax5, 'ax6', ax6);
         end % Initialize Performance Plots
+
+        function theta_plot(frameax1, frameax2, frameax3, frameax4, em1, em2, tm1, tm2, rkm1, rkm2, om1, om2)
+
+            % Establish subplot
+            axes(frameax1)
+            xaxis = 0:em1.step:em1.duration;
+            ylim([-5 5])
+            hold on;
+
+            % Plot theta_1 and theta_2
+            p1 = plot(xaxis, em1.theta1_array, 'LineWidth', 1.5);
+            p2 = plot(xaxis, tm1.theta1_array, 'LineWidth', 1.5);
+            p3 = plot(xaxis, rkm1.theta1_array, 'LineWidth', 1.5);
+            p4 = plot(xaxis, om1.theta1_array, 'LineWidth', 1.5);
+
+            legend([p1, p2, p3, p4], {'Euler', 'Trapezoid', 'Runge-Kutta', 'ODE45'});
+
+            % Establish subplot
+            axes(frameax2)
+            xaxis = 0:em1.step:em1.duration;
+            ylim([-5 5])
+            hold on;
+
+            % Plot theta_1 and theta_2
+            p5 = plot(xaxis, em1.theta2_array, 'LineWidth', 1.5);
+            p6 = plot(xaxis, tm1.theta2_array, 'LineWidth', 1.5);
+            p7 = plot(xaxis, rkm1.theta2_array, 'LineWidth', 1.5);
+            p8 = plot(xaxis, om1.theta2_array, 'LineWidth', 1.5);
+
+            legend([p5, p6, p7, p8], {'Euler', 'Trapezoid', 'Runge-Kutta', 'ODE45'});
+
+            % Establish subplot
+            axes(frameax3)
+            xaxis = 0:em2.step:em2.duration;
+            ylim([-5 5])
+            hold on;
+
+            % Plot theta_1 and theta_2
+            p9 = plot(xaxis, em2.theta1_array, 'LineWidth', 1.5);
+            p10 = plot(xaxis, tm2.theta1_array, 'LineWidth', 1.5);
+            p11 = plot(xaxis, rkm2.theta1_array, 'LineWidth', 1.5);
+            p12 = plot(xaxis, om2.theta1_array, 'LineWidth', 1.5);
+
+            legend([p9, p10, p11, p12], {'Euler', 'Trapezoid', 'Runge-Kutta', 'ODE45'});
+
+            % Establish subplot
+            axes(frameax4)
+            xaxis = 0:em2.step:em2.duration;
+            ylim([-5 5])
+            hold on;
+
+            % Plot theta_1 and theta_2
+            p13 = plot(xaxis, em2.theta2_array, 'LineWidth', 1.5);
+            p14 = plot(xaxis, tm2.theta2_array, 'LineWidth', 1.5);
+            p15 = plot(xaxis, rkm2.theta2_array, 'LineWidth', 1.5);
+            p16 = plot(xaxis, om2.theta2_array, 'LineWidth', 1.5);
+
+            legend([p13, p14, p15, p16], {'Euler', 'Trapezoid', 'Runge-Kutta', 'ODE45'});
+        end
 
         function performance_plot(actual, attempt, frameax)
 
