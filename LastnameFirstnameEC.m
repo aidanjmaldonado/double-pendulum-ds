@@ -15,7 +15,7 @@ theta2_dot  = 0;           % initial angular velocity of arm 2 (rad/s)
 dampening   = 1.00;        % scalar - controls how the system experiences friction (1.00 for no friction, 0.01 for max friction)
 
 % Simulation settings
-t_step    = 0.01;          % simulation timestamp precision (s/step) - [1st simulation, 2nd simulation]
+t_step    = [0.01, 0.01];  % simulation timestamp precision (s/step) - [1st simulation, 2nd simulation]
 duration  = 5;             % simulation duration (s)
 
 % % Simulations
@@ -26,17 +26,17 @@ normalize = false;        % Normalize theta plot [-π, π]
 animation_speed = 1.00;   % Playback speed
 
 % Initialize double pendulum simulation states
-euler_method_1 = simulation(@Euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
-euler_method_2 = simulation(@Euler, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+euler_method_1 = simulation(@Euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
+euler_method_2 = simulation(@Euler, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
 
-trapezoid_method_1 = simulation(@Trapezoid, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
-trapezoid_method_2 = simulation(@Trapezoid, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+trapezoid_method_1 = simulation(@Trapezoid, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
+trapezoid_method_2 = simulation(@Trapezoid, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
 
-runge_kutta_method_1 = simulation(@RungeKutta, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
-runge_kutta_method_2 = simulation(@RungeKutta, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+runge_kutta_method_1 = simulation(@RungeKutta, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
+runge_kutta_method_2 = simulation(@RungeKutta, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
 
-ode45_method_1 = simulation(@ODE45, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
-ode45_method_2 = simulation(@ODE45, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+ode45_method_1 = simulation(@ODE45, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
+ode45_method_2 = simulation(@ODE45, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
 
 % Run simulations
 euler_method_1.run()
