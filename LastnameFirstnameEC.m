@@ -15,7 +15,7 @@ theta2_dot  = 0;           % initial angular velocity of arm 2 (rad/s)
 dampening   = 1.00;        % scalar - controls how the system experiences friction (1.00 for no friction, 0.01 for max friction)
 
 % Simulation settings
-t_step    = [0.1, 0.01];   % simulation timestamp precision (s/step) - [1st simulation, 2nd simulation]
+t_step    = 0.01;          % simulation timestamp precision (s/step) - [1st simulation, 2nd simulation]
 duration  = 5;             % simulation duration (s)
 
 % % Simulations
@@ -26,17 +26,17 @@ normalize = false;        % Normalize theta plot [-π, π]
 animation_speed = 1.00;   % Playback speed
 
 % Initialize double pendulum simulation states
-euler_method_1 = simulation(@Euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
-euler_method_2 = simulation(@Euler, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
+euler_method_1 = simulation(@Euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+euler_method_2 = simulation(@Euler, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
 
-trapezoid_method_1 = simulation(@Trapezoid, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
-trapezoid_method_2 = simulation(@Trapezoid, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
+trapezoid_method_1 = simulation(@Trapezoid, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+trapezoid_method_2 = simulation(@Trapezoid, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
 
-runge_kutta_method_1 = simulation(@RungeKutta, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
-runge_kutta_method_2 = simulation(@RungeKutta, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
+runge_kutta_method_1 = simulation(@RungeKutta, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+runge_kutta_method_2 = simulation(@RungeKutta, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
 
-ode45_method_1 = simulation(@ODE45, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
-ode45_method_2 = simulation(@ODE45, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(2), duration, dampening, normalize);
+ode45_method_1 = simulation(@ODE45, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
+ode45_method_2 = simulation(@ODE45, g, m1, m2, L1, L2(2), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step, duration, dampening, normalize);
 
 % Run simulations
 euler_method_1.run()
@@ -51,6 +51,17 @@ runge_kutta_method_2.run()
 ode45_method_1.run()
 ode45_method_2.run()
 
+% Plot theta over time
+simulation.theta_plot(frame.ax2, frame.ax3, frame.ax5, frame.ax6, ...
+    euler_method_1, ...
+    euler_method_2, ...
+    trapezoid_method_1, ...
+    trapezoid_method_2, ...
+    runge_kutta_method_1, ...
+    runge_kutta_method_2, ...
+    ode45_method_1, ...
+    ode45_method_2)
+
 % Animate simulation and plot results
 euler_method_1.animate("Initial Condition 1 - Euler Method", animation_speed, frame.ax1)
 euler_method_2.animate("Initial Condition 2 - Euler Method", animation_speed, frame.ax4)
@@ -63,16 +74,6 @@ runge_kutta_method_2.animate("Initial Condition 2 - Runge-Kutta Method", animati
 
 ode45_method_1.animate("Initial Condition 1 - ode45 Method", animation_speed, frame.ax1)
 ode45_method_2.animate("Initial Condition 2 - ode45 Method", animation_speed, frame.ax4)
-
-simulation.theta_plot(frame.ax2, frame.ax3, frame.ax5, frame.ax6, ...
-    euler_method_1, ...
-    euler_method_2, ...
-    trapezoid_method_1, ...
-    trapezoid_method_2, ...
-    runge_kutta_method_1, ...
-    runge_kutta_method_2, ...
-    ode45_method_1, ...
-    ode45_method_2)
 
 % Performance plots
 p_frame = simulation.initialize_performance();

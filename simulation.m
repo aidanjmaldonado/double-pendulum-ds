@@ -194,7 +194,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Establish subplot
             axes(frameax1)
             xaxis = 0:em1.step:em1.duration;
-            ylim([-5 5])
+            ylim([-1 1])
             hold on;
 
             % Plot theta_1 and theta_2
@@ -208,7 +208,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Establish subplot
             axes(frameax2)
             xaxis = 0:em1.step:em1.duration;
-            ylim([-5 5])
+            ylim([-1 1])
             hold on;
 
             % Plot theta_1 and theta_2
@@ -222,7 +222,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Establish subplot
             axes(frameax3)
             xaxis = 0:em2.step:em2.duration;
-            ylim([-5 5])
+            ylim([-1 1])
             hold on;
 
             % Plot theta_1 and theta_2
@@ -236,7 +236,7 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % Establish subplot
             axes(frameax4)
             xaxis = 0:em2.step:em2.duration;
-            ylim([-5 5])
+            ylim([-1 1])
             hold on;
 
             % Plot theta_1 and theta_2
