@@ -1,5 +1,7 @@
 # Double Pendulum Dynamical System
 
+* outdated - see commits before March 12th
+
 ## Three integration methods:
 1. Euler Method
 2. Trapezoid Method
