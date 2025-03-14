@@ -21,9 +21,9 @@ duration  = 5;             % simulation duration (s)
 % % Simulations
 
 % Initialize plots
-frame = simulation.initialize_plots(L1, L2);
-normalize = false;        % Normalize theta plot [-π, π]
-animation_speed = 1.00;   % Playback speed
+theta_plot_bounds = [-0.7, 0.7];                                    % Y-axis bounds for theta plot
+frame = simulation.initialize_plots(L1, L2, theta_plot_bounds);     % Figure 1 frame
+animation_speed = 1.00;                                             % Playback speed
 
 % Initialize double pendulum simulation states
 euler_method_1 = simulation(@Euler, g, m1, m2, L1, L2(1), theta1_init, theta1_dot, theta2_init, theta2_dot, t_step(1), duration, dampening, normalize);
