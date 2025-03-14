@@ -20,7 +20,7 @@ _Notes_:
 
 ## Project Files:
 
-1. *Function* `EOM.m` - Contains two functions, `M1AA.m` and `M2AA.m`, both of which calculate angular momentum $$\ddot{\theta_{i}}$$ of $$\theta_{i}$$ given the current values of $$\theta_{1}$$, $$\dot{\theta_{1}}$$, $$\theta_{2}$$, $\dot{\theta_{2}}$ at the $n$-th state.
+1. *Function* `EOM.m` - Contains two nested functions, `M1AA.m` and `M2AA.m`, both of which calculate angular momentum $$\ddot{\theta_{i}}$$ of $$\theta_{i}$$ given the current values of $$\theta_{1}$$, $$\dot{\theta_{1}}$$, $$\theta_{2}$$, $\dot{\theta_{2}}$ at the $n$-th state.
 
 2. *Function* `RungeKutta.m` - Calculates the $$(n+1)$$-th state values of $$\theta_{1}$$, $$\dot{\theta_{1}}$$, $$\theta_{2}$$, $$\dot{\theta_{2}}$$ given them at the $$n$$-th state. Takes the weighted average of the intermediate slopes $$k_{1}$$ through $$k_{4}$$. Calls `M1AA.m` and `M2AA.m`.
 
@@ -38,10 +38,10 @@ _Notes_:
 
 ## Output
 
-### Example Figure 1 (Outdated):
+### Example Figure 1:
 
 <center>
-    <img src="resources/ex_figure_1.gif" alt="Figure 1" width="400"/>
+    <img src="resources/ex_figure_1.gif" alt="Figure 1" width="1000"/>
 </center>
 
 ### Example Figure 2:
