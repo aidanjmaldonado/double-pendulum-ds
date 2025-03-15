@@ -15,14 +15,13 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
         theta1_array
         theta2_array
         effective_dampening
-        normalize
     end % Properties
 
     methods
 
         % Instantiate a simulation object with specified integration function
         % and initial conditions
-        function obj = simulation(integration_function, gravity, mass1, mass2, length1, length2, theta1, theta1_dot, theta2, theta2_dot, step, duration, dampening, normalize)
+        function obj = simulation(integration_function, gravity, mass1, mass2, length1, length2, theta1, theta1_dot, theta2, theta2_dot, step, duration, dampening)
             obj.integration_function = integration_function;
             obj.gravity = gravity;
             obj.mass1 = mass1;
@@ -38,7 +37,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             obj.theta1_array = zeros(1, floor(obj.duration / obj.step) + 1);
             obj.theta2_array = zeros(1, floor(obj.duration / obj.step) + 1);
             obj.effective_dampening = dampening^(obj.step / 0.1);
-            obj.normalize = normalize;
         end
         
         % Run Simulation: Given initial conditions, compute subsequent states
@@ -75,7 +73,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             % % Establish pendulum subplot
             axes(frameax)
             title(title_name);
-            % legend({'\theta_1', '\theta_2'}); -- Removed to improve performance (See loop below)
             hold on;
 
             % % Establish figure edges to center the pendulum
@@ -108,9 +105,6 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
                 set(arm2, 'XData', [arm2_top_x, arm2_bot_x], 'YData', [arm2_top_y, arm2_bot_y]);
                 set(ball1, 'XData', arm1_bot_x, 'YData', arm1_bot_y);
                 set(ball2, 'XData', arm2_bot_x, 'YData', arm2_bot_y);
-
-                % Update legend -- Removed to improve performance
-                % set(pendulum_legend, 'String', {sprintf('\\theta_1 = %.2f rad', obj.theta1_array(t)), sprintf('\\theta_2 = %.2f rad', obj.theta2_array(t))});
 
                 % Step forward
                 pause(obj.step * (1/speed));
@@ -178,17 +172,17 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
 
             % IC subplots
             ax1 = subplot(3, 2, 1);
-            title("IC 1: Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Euler v.s. ode45:   |Error| of \theta_1 and \theta_2  / Time")
             ax2 = subplot(3, 2, 2);
-            title("IC 2: Euler Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Euler v.s. ode45:   |Error| of \theta_1 and \theta_2  / Time")
             ax3 = subplot(3, 2, 3);
-            title("IC 1: Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Trapezoid v.s. ode45:  |Error| of \theta_1 and \theta_2  / Time")
             ax4 = subplot(3, 2, 4);
-            title("IC 2: Trapezoid Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Trapezoid v.s. ode45:  |Error| of \theta_1 and \theta_2  / Time")
             ax5 = subplot(3, 2, 5);
-            title("IC 1: Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 1: Runge-Kutta v.s.ode45:  |Error| of \theta_1 and \theta_2  / Time")
             ax6 = subplot(3, 2, 6);
-            title("IC 2: Runge-Kutta Performance Against ode45: Absolute Error in \theta_1 and \theta_2 Over Time")
+            title("IC 2: Runge-Kutta v.s. ode45:  |Error| of \theta_1 and \theta_2  / Time")
 
             pframe = struct('figure', pframe, 'ax1', ax1, 'ax2', ax2, 'ax3', ax3, 'ax4', ax4, 'ax5', ax5, 'ax6', ax6);
         end % Initialize Performance Plots
@@ -264,9 +258,9 @@ classdef simulation < handle % 'handle' ensures that the object properties can b
             plot(xaxis, theta2_error, 'LineWidth', 1.5, 'Color', '#60a871'); 
         
             % Label axes
-            xlabel('Time (s)');
-            ylabel('Error in \theta (radians)');
-            legend({'Error in \theta_1', 'Error in \theta_2'});
+            xlabel('Time [s]');
+            ylabel('\theta Abs Error [rad]');
+            legend({'|Error| \theta_1', '|Error| \theta_2'});
             grid on;
         end % Plot Performance
     end % Methods (Static)
